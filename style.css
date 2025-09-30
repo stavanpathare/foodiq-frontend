@@ -1,0 +1,135 @@
+/* Reset & body */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  color: #333;
+  line-height: 1.4;
+}
+
+/* Container */
+.container {
+  width: 95%;
+  max-width: 500px;
+  margin: 15px auto;
+  padding: 15px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* Heading & description */
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 0;
+  margin: 0 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #f0f0f0;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.tab.active {
+  background: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+/* Inputs & buttons */
+input, button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  margin-top: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+/* Results section */
+#results {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f0f8ff;
+  border-radius: 10px;
+  text-align: left;
+  word-wrap: break-word;
+  font-size: 0.95rem;
+}
+
+.good {
+  color: green;
+  font-weight: bold;
+  background: #e6f9e6;
+  padding: 6px;
+  border-radius: 6px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.bad {
+  color: red;
+  font-weight: bold;
+  background: #ffe6e6;
+  padding: 6px;
+  border-radius: 6px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.warning {
+  color: orange;
+  font-weight: bold;
+  background: #fff5e6;
+  padding: 6px;
+  border-radius: 6px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Mobile first adjustments */
+@media (max-width: 480px) {
+  h2 { font-size: 1.2rem; }
+  p { font-size: 0.9rem; }
+  .tab { font-size: 0.9rem; padding: 10px 0; margin: 0 3px; }
+  input, button { font-size: 0.9rem; padding: 10px; }
+  #results { font-size: 0.9rem; padding: 10px; }
+}
