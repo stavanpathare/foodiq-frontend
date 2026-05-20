@@ -30,6 +30,105 @@ fetch('ingredients.json')
     };
   });
 
+// ------------------
+// PROFILE MODAL LOGIC
+// ------------------
+const modal = document.getElementById("profileModal");
+const openBtn = document.getElementById("profileBtn");
+const closeBtn = document.getElementById("closeModal");
+const saveBtn = document.getElementById("saveProfile");
+
+openBtn.onclick = () => { modal.style.display = "flex"; loadProfile(); };
+closeBtn.onclick = () => { modal.style.display = "none"; };
+
+saveBtn.onclick = () => {
+  const profile = {
+    name: document.getElementById("userName").value,
+    age: document.getElementById("userAge").value,
+    gender: document.getElementById("userGender").value,
+    goal: document.getElementById("userGoal").value,
+    allergies: document.getElementById("userAllergies").value.toLowerCase().split(',').map(a => a.trim()),
+    diet: document.getElementById("userDiet").value
+  };
+  localStorage.setItem("foodiqProfile", JSON.stringify(profile));
+  alert("Profile saved successfully ✅");
+  modal.style.display = "none";
+};
+
+// Load saved profile
+function loadProfile() {
+  const profile = JSON.parse(localStorage.getItem("foodiqProfile"));
+  if (!profile) return;
+  document.getElementById("userName").value = profile.name || "";
+  document.getElementById("userAge").value = profile.age || "";
+  document.getElementById("userGender").value = profile.gender || "Male";
+  document.getElementById("userGoal").value = profile.goal || "Maintain health";
+  document.getElementById("userAllergies").value = profile.allergies?.join(", ") || "";
+  document.getElementById("userDiet").value = profile.diet || "Vegetarian";
+}
+
+
+//---------------------------------------
+// AI Vision Detection (MobileNet)
+//---------------------------------------
+let net; 
+async function loadModel() {
+  net = await mobilenet.load();
+  console.log("✅ MobileNet model loaded");
+}
+loadModel();
+
+const imageInput = document.getElementById("imageInput");
+const preview = document.getElementById("preview");
+const detectionResult = document.getElementById("detection-result");
+
+imageInput.addEventListener("change", async function () {
+  const file = this.files[0];
+  if (!file) return;
+
+  // Preview the uploaded image
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    preview.src = e.target.result;
+    preview.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+
+  // Wait for preview to load fully
+  await new Promise((r) => setTimeout(r, 500));
+
+  // Run classification
+  const result = await net.classify(preview);
+  if (!result || !result.length) return;
+  const best = result[0];
+  const name = best.className.toLowerCase();
+  const confidence = (best.probability * 100).toFixed(1);
+
+  // Decide mode
+  let detectedMode = "food";
+  if (
+    name.includes("lotion") ||
+    name.includes("cream") ||
+    name.includes("toothpaste") ||
+    name.includes("soap") ||
+    name.includes("bottle") ||
+    name.includes("cosmetic")
+  ) {
+    detectedMode = "skin";
+  }
+
+  // Auto switch tab visually
+  document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+  const btn = document.querySelector(`.tab:nth-child(${detectedMode === "food" ? 1 : 2})`);
+  btn.classList.add("active");
+  currentMode = detectedMode;
+
+  // Display
+  detectionResult.innerHTML = `🔍 Detected: <b>${name}</b> (${confidence}%)
+   → Mode: <b>${detectedMode === "food" ? "Food" : "Skin-care"}</b>`;
+  detectionResult.style.color = detectedMode === "food" ? "#0b6623" : "#0077cc";
+});
+
 // -----------------------------
 // Mode Switch
 // -----------------------------
@@ -357,6 +456,20 @@ function renderNutrientTips(n) {
     container.appendChild(d);
   });
 }
+
+ // 🔹 Integrate Personal Profile Insights
+  const profile = JSON.parse(localStorage.getItem("foodiqProfile"));
+  if (profile) {
+    if (profile.goal === "Lose weight" && n.sugar > 15) {
+      tips.push({ type: "bad", text: "High sugar content — not ideal for weight loss." });
+    }
+    if (profile.goal === "Gain muscle" && n.protein < 8) {
+      tips.push({ type: "bad", text: "Low protein — not suitable for muscle gain." });
+    }
+    if (profile.allergies && profile.allergies.some(a => text.toLowerCase().includes(a.toLowerCase()))) {
+      tips.push({ type: "bad", text: `⚠️ Allergen detected (${profile.allergies.join(", ")})` });
+    }
+  }
 
 function renderVerdict(score) {
   const v = document.getElementById('verdict');

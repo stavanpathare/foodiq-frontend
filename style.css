@@ -87,7 +87,8 @@ h1 { font-size:1.1rem; }
 #cameraBtn { background:#0077ff; color:#fff; }
 #analyzeBtn { background:#22c55e; color:#fff; }
 #captureBtn { background:#ff7a00; color:#fff; }
-
+#preview-container { text-align:center; margin-top:10px; }
+#detection-result { font-size:0.9rem; color:#0077cc; }
 /* camera view */
 #cameraWrap { margin-top:8px; display:flex; justify-content:center; }
 #video { width:100%; max-width:360px; border-radius:8px; border:1px solid #e6ecf1; }
@@ -124,7 +125,51 @@ h1 { font-size:1.1rem; }
 .verdict { margin-top:12px; padding:12px; border-radius:8px; font-weight:800; font-size:1rem; text-align:center; }
 
 /* footer */
-.footer { margin-top:12px; text-align:center; color:#7a8190; font-size:0.85rem; }
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Profile */
+.profile-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-content input, 
+.modal-content select {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
 
 /* responsive tweaks */
 @media (max-width:640px) {

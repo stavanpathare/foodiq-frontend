@@ -6,10 +6,14 @@
   <title>FoodIQ — Smart Label Analyzer</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="style.css">
+
   <!-- Tesseract.js -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- TensorFlow + MobileNet -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 </head>
 <body>
   <div class="container">
@@ -19,11 +23,55 @@
         <div>
           <h1>FoodIQ</h1>
           <p class="tag">Know what you eat • Food & Skin-care label analysis</p>
+          <button id="profileBtn" class="profile-Btn">🧑🏽</button>
         </div>
       </div>
     </header>
 
-    <!-- Mode tabs -->
+
+
+    <!-- Profile Modal -->
+     <div id="profileModal" class="modal">
+      <div class="modal-content">
+        <h2> 🧍🏽‍♂️ Your Profile</h2>
+        <label> Name: </label>
+        <input type="text" id="userName" placeholder="Enter your name">
+
+        <label>Age:</label>
+        <input type="number" id="userAge" placeholder="Enter your age">
+
+        <label >Gender:</label>
+        <select  id="userGender">
+          <option>Male</option>
+          <option>Female</option>
+          <option>Others</option>
+        </select>
+
+        <label>Health Goal:</label>
+        <select id="userGoal">
+          <option>Maintain Health</option>
+          <option>Lose Weight</option>
+          <option>Gain Muscle</option>
+        </select>
+
+        <label>Allergies (comma separated):</label>
+        <input type="text" id="userAllergies" placeholder="e.g. dairy, nuts">
+
+        <label>Dietary Preference</label>
+        <select  id="userDiet">
+          <option>Vegetarian</option>
+          <option>Non-Vegetarian</option>
+          <option>Vegan</option>
+        </select>
+        
+        <button id="sabeProfile">💾 Save Profile</button> 
+        <button id="closeModal">❌ CLose</button>
+
+      </div>
+     </div>
+
+
+    <!-- Tabs -->
     <div class="tabs">
       <button class="tab active" onclick="selectMode('food', this)">🥗 Food</button>
       <button class="tab" onclick="selectMode('skin', this)">💧 Skin-care</button>
@@ -33,7 +81,7 @@
     <div class="controls">
       <label class="file-label">
         <input type="file" id="imageInput" accept="image/*" />
-        <p id="fileName" class="fileNAme"></p>
+        <p id="fileName" class="fileName"></p>
         Choose Image
       </label>
 
@@ -41,54 +89,52 @@
       <button id="captureBtn" onclick="capturePhoto()" style="display:none">📸 Capture</button>
 
       <button id="analyzeBtn" onclick="processImage()">Analyze</button>
-<div id="demoSamples">
-  <p style="margin-top: 12px; font-size: 0.9rem; color: #555;">
-    Don't have an image? 
-    <button class="demoBtn" onclick="useDemo('food')">Try Food Demo</button>
-    <button class="demoBtn" onclick="useDemo('skincare')">Try Skincare Demo</button>
-  </p>
-</div>
 
+      <div id="demoSamples">
+        <p style="margin-top: 12px; font-size: 0.9rem; color: #555;">
+          Don't have an image?
+          <button class="demoBtn" onclick="useDemo('food')">Try Food Demo</button>
+          <button class="demoBtn" onclick="useDemo('skincare')">Try Skincare Demo</button>
+        </p>
+      </div>
     </div>
 
-    <!-- video preview for camera -->
+    <!-- AI Detection preview -->
+    <div id="preview-container">
+      <img id="preview" alt="Preview" style="max-width:180px;display:none;border-radius:10px;margin-top:8px;">
+      <p id="detection-result" style="font-weight:600;margin-top:6px;"></p>
+    </div>
+
+    <!-- Camera -->
     <div id="cameraWrap" style="display:none">
       <video id="video" playsinline autoplay></video>
     </div>
 
     <div id="loading" class="loading" aria-live="polite"></div>
 
-    <!-- results -->
+    <!-- Results -->
     <div id="results" class="results" hidden>
-      <!-- Score -->
       <div class="scoreRow">
         <div class="scoreBox">
           <div id="scoreValue" class="scoreValue">—</div>
           <div class="scoreLabel">Health Score</div>
           <div id="scoreBar" class="scoreBar"><div id="scoreFill" class="scoreFill"></div></div>
         </div>
-
-        <!-- Chart -->
         <div class="chartBox">
           <canvas id="nutriChart" width="200" height="200"></canvas>
         </div>
       </div>
 
-      <!-- Nutrient details -->
       <div id="nutrients" class="card"></div>
-
-      <!-- Ingredient tips -->
       <div id="tips" class="card"></div>
-
-      <!-- Final verdict -->
       <div id="verdict" class="verdict"></div>
     </div>
 
-    <footer class="footer">
-      <small>Phase 2 — FoodIQ • Client-side demo. Deploy with GitHub Pages / Netlify.</small>
-    </footer>
+    <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Created by Stavan Labs. All rights reserved.</p>
+  </footer>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
