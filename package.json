@@ -1,0 +1,13 @@
+{
+  "name": "foodiq",
+  "version": "1.0.0",
+  "description": "FoodIQ AI-powered food and skincare label analyzer",
+  "type": "commonjs",
+  "scripts": {
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}

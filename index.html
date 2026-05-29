@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>FoodIQ — Smart Label Analyzer</title>
-  <link rel="icon" href="data:,">
+  <link rel="icon" href="Assets/Icons/icon.png" type="image/png">
   <link rel="stylesheet" href="style.css">
 
   <!-- Tesseract.js -->
@@ -23,7 +23,7 @@
         <div>
           <h1>FoodIQ</h1>
           <p class="tag">Know what you eat • Food & Skin-care label analysis</p>
-          <button id="profileBtn" class="profile-Btn">🧑🏽</button>
+          <button id="profileBtn" class="profile-btn">🧑🏽</button>
         </div>
       </div>
     </header>
@@ -31,41 +31,41 @@
 
 
     <!-- Profile Modal -->
-     <div id="profileModal" class="modal">
-      <div class="modal-content">
-        <h2> 🧍🏽‍♂️ Your Profile</h2>
-        <label> Name: </label>
+     <div id="profileModal" class="modal" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+        <h2 id="profileTitle"> 🧍🏽‍♂️ Your Profile</h2>
+        <label for="userName">Name:</label>
         <input type="text" id="userName" placeholder="Enter your name">
 
-        <label>Age:</label>
+        <label for="userAge">Age:</label>
         <input type="number" id="userAge" placeholder="Enter your age">
 
-        <label >Gender:</label>
+        <label for="userGender">Gender:</label>
         <select  id="userGender">
           <option>Male</option>
           <option>Female</option>
           <option>Others</option>
         </select>
 
-        <label>Health Goal:</label>
+        <label for="userGoal">Health Goal:</label>
         <select id="userGoal">
           <option>Maintain Health</option>
           <option>Lose Weight</option>
           <option>Gain Muscle</option>
         </select>
 
-        <label>Allergies (comma separated):</label>
+        <label for="userAllergies">Allergies (comma separated):</label>
         <input type="text" id="userAllergies" placeholder="e.g. dairy, nuts">
 
-        <label>Dietary Preference</label>
+        <label for="userDiet">Dietary Preference</label>
         <select  id="userDiet">
           <option>Vegetarian</option>
           <option>Non-Vegetarian</option>
           <option>Vegan</option>
         </select>
         
-        <button id="sabeProfile">💾 Save Profile</button> 
-        <button id="closeModal">❌ CLose</button>
+        <button type="button" id="saveProfile">💾 Save Profile</button>
+        <button type="button" id="closeModal">❌ Close</button>
 
       </div>
      </div>
@@ -73,28 +73,28 @@
 
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab active" onclick="selectMode('food', this)">🥗 Food</button>
-      <button class="tab" onclick="selectMode('skin', this)">💧 Skin-care</button>
+      <button type="button" class="tab active" data-mode="food" onclick="selectMode('food', this)">🥗 Food</button>
+      <button type="button" class="tab" data-mode="skin" onclick="selectMode('skin', this)">💧 Skin-care</button>
     </div>
 
     <!-- Controls -->
     <div class="controls">
-      <label class="file-label">
-        <input type="file" id="imageInput" accept="image/*" />
+      <label class="file-label" aria-label="Upload image file">
+        <input type="file" id="imageInput" accept="image/*" aria-label="Upload image file" />
         <p id="fileName" class="fileName"></p>
         Choose Image
       </label>
 
-      <button id="cameraBtn" onclick="toggleCamera()">📷 Use Camera</button>
-      <button id="captureBtn" onclick="capturePhoto()" style="display:none">📸 Capture</button>
+      <button type="button" id="cameraBtn" onclick="toggleCamera()">📷 Use Camera</button>
+      <button type="button" id="captureBtn" onclick="capturePhoto()" style="display:none">📸 Capture</button>
 
-      <button id="analyzeBtn" onclick="processImage()">Analyze</button>
+      <button type="button" id="analyzeBtn" onclick="processImage()">Analyze</button>
 
       <div id="demoSamples">
         <p style="margin-top: 12px; font-size: 0.9rem; color: #555;">
           Don't have an image?
           <button class="demoBtn" onclick="useDemo('food')">Try Food Demo</button>
-          <button class="demoBtn" onclick="useDemo('skincare')">Try Skincare Demo</button>
+          <button class="demoBtn" onclick="useDemo('skin')">Try Skincare Demo</button>
         </p>
       </div>
     </div>
@@ -132,9 +132,10 @@
 
     <!-- Footer -->
   <footer>
-    <p>&copy; 2026 Created by Stavan Labs. All rights reserved.</p>
+    <p>&copy; 2025 Created by Stavan Labs. All rights reserved.</p>
   </footer>
   </div>
+  <script src="utils.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
