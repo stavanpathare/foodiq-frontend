@@ -204,3 +204,8 @@ footer {
   .scoreRow { flex-direction:column; align-items:stretch; }
   .chartBox { order: -1; }
 }
+.stavan-labs{
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}

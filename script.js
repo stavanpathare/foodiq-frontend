@@ -5,6 +5,7 @@ let currentMode = 'food';
 let videoStream = null;
 let chartInstance = null;
 let ingredientsDB = {}; // loaded from ingredients.json
+let manualModeSelection = false;
 
 // -----------------------------
 // Load ingredients database
@@ -18,15 +19,19 @@ fetch('ingredients.json')
   .catch(() => {
     // fallback DB if fetch fails
     ingredientsDB = {
-      "sugar": { "effect": "High sugar intake increases diabetes/weight gain", "type": "bad" },
-      "protein": { "effect": "Builds muscle and supports repair", "type": "good" },
-      "fat": { "effect": "Essential but excess raises cholesterol risk", "type": "warning" },
-      "sodium": { "effect": "Excess increases blood pressure risk", "type": "warning" },
-      "paraben": { "effect": "Controversial preservative, possible risks", "type": "bad" },
-      "sls": { "effect": "Harsh surfactant; may irritate skin", "type": "bad" },
+      "vitamin e": { "effect": "Antioxidant, supports skin health", "type": "good" },
       "aloe": { "effect": "Soothing & moisturizing", "type": "good" },
-      "vitamin e": { "effect": "Antioxidant, skin benefit", "type": "good" },
-      "fragrance": { "effect": "May irritate sensitive skin", "type": "warning" }
+      "niacinamide": { "effect": "Improves skin barrier and pigmentation", "type": "good" },
+      "hyaluronic": { "effect": "Hydrating humectant", "type": "good" },
+      "ceramide": { "effect": "Strengthens skin barrier", "type": "good" },
+      "shea butter": { "effect": "Rich moisturizer and anti-inflammatory", "type": "good" },
+      "paraben": { "effect": "Controversial preservative; possible risks", "type": "bad" },
+      "sls": { "effect": "Harsh surfactant; may irritate skin", "type": "bad" },
+      "sodium lauryl sulfate": { "effect": "Harsh surfactant; may irritate skin", "type": "bad" },
+      "formaldehyde": { "effect": "Toxic preservative; avoid", "type": "bad" },
+      "mineral oil": { "effect": "Can be comedogenic for some skin", "type": "warning" },
+      "fragrance": { "effect": "May irritate sensitive skin", "type": "warning" },
+      "alcohol": { "effect": "Can dry skin and cause irritation", "type": "warning" }
     };
   });
 
@@ -222,12 +227,15 @@ imageInput.addEventListener("change", async function (event) {
       name.includes("cosmetic") ? "skin" : "food"
     );
 
-    document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
     const btn = document.querySelector(`.tab[data-mode="${detectedMode}"]`);
-    if (btn) btn.classList.add("active");
-    currentMode = detectedMode;
-
-    detectionResult.innerHTML = `🔍 Detected: <strong>${name}</strong> (${confidence}%) → Mode: <strong>${detectedMode === "food" ? "Food" : "Skin-care"}</strong>`;
+    if (!manualModeSelection) {
+      document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+      currentMode = detectedMode;
+      detectionResult.innerHTML = `🔍 Detected: <strong>${name}</strong> (${confidence}%) → Mode: <strong>${detectedMode === "food" ? "Food" : "Skin-care"}</strong>`;
+    } else {
+      detectionResult.innerHTML = `🔍 Detected: <strong>${name}</strong> (${confidence}%) → Suggested mode: <strong>${detectedMode === "food" ? "Food" : "Skin-care"}</strong>`;
+    }
     detectionResult.style.color = detectedMode === "food" ? "#0b6623" : "#0077cc";
   };
   reader.readAsDataURL(file);
@@ -238,6 +246,7 @@ imageInput.addEventListener("change", async function (event) {
 // -----------------------------
 function selectMode(mode, btn) {
   currentMode = mode;
+  manualModeSelection = true;
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
   if (!btn) btn = document.querySelector(`.tab[data-mode="${mode}"]`);
   if (btn) btn.classList.add('active');
@@ -341,8 +350,8 @@ async function handleImageBlob(fileBlob) {
 
 function useDemo(category) {
   const demoImages = {
-    food: 'food.jpeg',
-    skin: 'skincare.jfif'
+    food: 'Food.jpg',
+    skin: 'Skincare.jpg'
   };
   const imgUrl = demoImages[category];
 
