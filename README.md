@@ -32,5 +32,12 @@ The app is **mobile-friendly** and uses **OCR (Tesseract.js)** to read text from
 
 ---
 
+## Testing
+
+- Install dependencies: `npm install`  
+- Run automated unit tests: `npm test`  
+
+---
+
 
 

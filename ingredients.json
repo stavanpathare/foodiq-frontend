@@ -1,13 +1,10 @@
 {
-  "sugar": { "effect": "High sugar intake increases diabetes/weight gain", "type": "bad" },
-  "high fructose corn syrup": { "effect": "Linked to obesity when overconsumed", "type": "bad" },
-  "protein": { "effect": "Builds muscle and supports repair", "type": "good" },
-  "fat": { "effect": "Essential but excess raises cholesterol risk", "type": "warning" },
-  "sodium": { "effect": "Excess increases blood pressure risk", "type": "warning" },
   "vitamin e": { "effect": "Antioxidant, supports skin health", "type": "good" },
   "aloe": { "effect": "Soothing & moisturizing", "type": "good" },
   "niacinamide": { "effect": "Improves skin barrier and pigmentation", "type": "good" },
   "hyaluronic": { "effect": "Hydrating humectant", "type": "good" },
+  "ceramide": { "effect": "Strengthens skin barrier", "type": "good" },
+  "shea butter": { "effect": "Rich moisturizer and anti-inflammatory", "type": "good" },
   "paraben": { "effect": "Controversial preservative; possible risks", "type": "bad" },
   "parabens": { "effect": "Controversial preservative; possible risks", "type": "bad" },
   "sls": { "effect": "Harsh surfactant; may irritate skin", "type": "bad" },
@@ -16,5 +13,7 @@
   "mineral oil": { "effect": "Can be comedogenic for some skin", "type": "warning" },
   "fragrance": { "effect": "May irritate sensitive skin", "type": "warning" },
   "perfume": { "effect": "May irritate sensitive skin", "type": "warning" },
-  "alcohol": { "effect": "Can dry skin and cause irritation", "type": "warning" }
+  "alcohol": { "effect": "Can dry skin and cause irritation", "type": "warning" },
+  "silicone": { "effect": "May clog pores and trap bacteria", "type": "warning" },
+  "bht": { "effect": "Synthetic antioxidant; potential skin irritant", "type": "warning" }
 }

@@ -1,15 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FoodIQ — Smart Label Analyzer</title>
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="style.css">
+  <!-- Basic -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Search Console -->
+  <meta
+    name="google-site-verification"
+    content="yh-71o62KoYv-DYmOqUSHqqe1skYpYGv1SrpkGSXJMw"
+  />
+
+  <!-- SEO -->
+  <title>FoodIQ – AI Food Label & Skincare Ingredient Analyzer</title>
+
+  <meta
+    name="description"
+    content="Analyze food labels and skincare ingredients with AI. Understand nutrition, identify harmful ingredients, and make healthier purchasing decisions with FoodIQ."
+  />
+
+  <meta
+    name="keywords"
+    content="FoodIQ, food label analyzer, ingredient checker, nutrition analyzer, AI food scanner, skincare ingredient analyzer, cosmetic ingredient checker, ingredient analysis, healthy food, food additives, skincare ingredients, OCR, AI"
+  />
+
+  <meta name="author" content="FoodIQ" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#4CAF50" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://foodiq.netlify.app/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/icons/icon.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/icon.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://foodiq.netlify.app/" />
+  <meta
+    property="og:title"
+    content="FoodIQ – AI Food Label & Skincare Ingredient Analyzer"
+  />
+  <meta
+    property="og:description"
+    content="Scan food labels and skincare ingredients with AI to understand nutrition, ingredient safety, and product health before you buy."
+  />
+  <meta
+    property="og:image"
+    content="https://foodiq.netlify.app/assets/icons/icon.png"
+  />
+  <meta property="og:site_name" content="FoodIQ" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:title"
+    content="FoodIQ – AI Food Label & Skincare Ingredient Analyzer"
+  />
+  <meta
+    name="twitter:description"
+    content="Use AI to analyze food labels and skincare ingredients for healthier choices."
+  />
+  <meta
+    name="twitter:image"
+    content="https://foodiq.netlify.app/assets/icons/icon.png"
+  />
+
+  <!-- Search Engine Extras -->
+  <meta name="application-name" content="FoodIQ" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "FoodIQ",
+    "url": "https://foodiq.netlify.app/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Any",
+    "description": "AI-powered web application for analyzing food labels and skincare ingredients to help users make healthier purchasing decisions.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Libraries -->
   <!-- Tesseract.js -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
+
+  <!-- MobileNet -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 </head>
 <body>
   <div class="container">
@@ -19,76 +114,119 @@
         <div>
           <h1>FoodIQ</h1>
           <p class="tag">Know what you eat • Food & Skin-care label analysis</p>
+          <button id="profileBtn" class="profile-btn">🧑🏽</button>
         </div>
       </div>
     </header>
 
-    <!-- Mode tabs -->
+
+
+    <!-- Profile Modal -->
+     <div id="profileModal" class="modal" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+        <h2 id="profileTitle"> 🧍🏽‍♂️ Your Profile</h2>
+        <label for="userName">Name:</label>
+        <input type="text" id="userName" placeholder="Enter your name">
+
+        <label for="userAge">Age:</label>
+        <input type="number" id="userAge" placeholder="Enter your age">
+
+        <label for="userGender">Gender:</label>
+        <select  id="userGender">
+          <option>Male</option>
+          <option>Female</option>
+          <option>Others</option>
+        </select>
+
+        <label for="userGoal">Health Goal:</label>
+        <select id="userGoal">
+          <option>Maintain Health</option>
+          <option>Lose Weight</option>
+          <option>Gain Muscle</option>
+        </select>
+
+        <label for="userAllergies">Allergies (comma separated):</label>
+        <input type="text" id="userAllergies" placeholder="e.g. dairy, nuts">
+
+        <label for="userDiet">Dietary Preference</label>
+        <select  id="userDiet">
+          <option>Vegetarian</option>
+          <option>Non-Vegetarian</option>
+          <option>Vegan</option>
+        </select>
+        
+        <button type="button" id="saveProfile">💾 Save Profile</button>
+        <button type="button" id="closeModal">❌ Close</button>
+
+      </div>
+     </div>
+
+
+    <!-- Tabs -->
     <div class="tabs">
-      <button class="tab active" onclick="selectMode('food', this)">🥗 Food</button>
-      <button class="tab" onclick="selectMode('skin', this)">💧 Skin-care</button>
+      <button type="button" class="tab active" data-mode="food" onclick="selectMode('food', this)">🥗 Food</button>
+      <button type="button" class="tab" data-mode="skin" onclick="selectMode('skin', this)">💧 Skin-care</button>
     </div>
 
     <!-- Controls -->
     <div class="controls">
-      <label class="file-label">
-        <input type="file" id="imageInput" accept="image/*" />
-        <p id="fileName" class="fileNAme"></p>
+      <label class="file-label" aria-label="Upload image file">
+        <input type="file" id="imageInput" accept="image/*" aria-label="Upload image file" />
+        <p id="fileName" class="fileName"></p>
         Choose Image
       </label>
 
-      <button id="cameraBtn" onclick="toggleCamera()">📷 Use Camera</button>
-      <button id="captureBtn" onclick="capturePhoto()" style="display:none">📸 Capture</button>
+      <button type="button" id="cameraBtn" onclick="toggleCamera()">📷 Use Camera</button>
+      <button type="button" id="captureBtn" onclick="capturePhoto()" style="display:none">📸 Capture</button>
 
-      <button id="analyzeBtn" onclick="processImage()">Analyze</button>
-<div id="demoSamples">
-  <p style="margin-top: 12px; font-size: 0.9rem; color: #555;">
-    Don't have an image? 
-    <button class="demoBtn" onclick="useDemo('food')">Try Food Demo</button>
-    <button class="demoBtn" onclick="useDemo('skincare')">Try Skincare Demo</button>
-  </p>
-</div>
+      <button type="button" id="analyzeBtn" onclick="processImage()">Analyze</button>
 
+      <div id="demoSamples">
+        <p style="margin-top: 12px; font-size: 0.9rem; color: #555;">
+          Don't have an image?
+          <button class="demoBtn" onclick="useDemo('food')">Try Food Demo</button>
+          <button class="demoBtn" onclick="useDemo('skin')">Try Skincare Demo</button>
+        </p>
+      </div>
     </div>
 
-    <!-- video preview for camera -->
+    <!-- AI Detection preview -->
+    <div id="preview-container">
+      <img id="preview" alt="Preview" style="max-width:180px;display:none;border-radius:10px;margin-top:8px;">
+      <p id="detection-result" style="font-weight:600;margin-top:6px;"></p>
+    </div>
+
+    <!-- Camera -->
     <div id="cameraWrap" style="display:none">
       <video id="video" playsinline autoplay></video>
     </div>
 
     <div id="loading" class="loading" aria-live="polite"></div>
 
-    <!-- results -->
+    <!-- Results -->
     <div id="results" class="results" hidden>
-      <!-- Score -->
       <div class="scoreRow">
         <div class="scoreBox">
           <div id="scoreValue" class="scoreValue">—</div>
           <div class="scoreLabel">Health Score</div>
           <div id="scoreBar" class="scoreBar"><div id="scoreFill" class="scoreFill"></div></div>
         </div>
-
-        <!-- Chart -->
         <div class="chartBox">
           <canvas id="nutriChart" width="200" height="200"></canvas>
         </div>
       </div>
 
-      <!-- Nutrient details -->
       <div id="nutrients" class="card"></div>
-
-      <!-- Ingredient tips -->
       <div id="tips" class="card"></div>
-
-      <!-- Final verdict -->
       <div id="verdict" class="verdict"></div>
     </div>
 
-    <footer class="footer">
-      <small>Phase 2 — FoodIQ • Client-side demo. Deploy with GitHub Pages / Netlify.</small>
-    </footer>
+    <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Created by <a href="http://stavanlabs.is-a.dev" class="stavan-labs">Stavan Labs</a> . All rights reserved.</p>
+  </footer>
   </div>
-
+  <script src="utils.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
